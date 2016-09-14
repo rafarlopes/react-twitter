@@ -7,7 +7,7 @@
     },
     render: function() {
         var componentToRender = this.state.user 
-            ? <TwitterHome user={this.state.user}/>
+            ? <TwitterHome user={this.state.user} url="/api/tweets/"/>
             : <Login onLoginSubmit={this.handleUserLogin}/>;
 
         return (
@@ -49,17 +49,45 @@ var TwitterHome = React.createClass({
     getInitialState: function() {
         return { tweets: [] , user: this.props.user };
     },
+    loadTweetsFromServer: function() {
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                this.setState({tweets: data});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    componentDidMount: function() {
+        this.loadTweetsFromServer();
+    },
     handleTweetSubmit: function(message) {
         var tweets = this.state.tweets;
         
         var tweet = {
             user: this.state.user,
-            date: Date.now(),
+            date: new Date().toJSON(),
             message: message
         };
-        
-        var newTweets = tweets.concat([tweet]);
-        this.setState({ tweets: newTweets, user: this.state.user });
+
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            type: 'POST',
+            data: tweet,
+            success: function(data) {
+                tweets.unshift(data);
+                this.setState({ tweets: tweets, user: this.state.user });
+            }.bind(this),
+            error: function(xhr, status, err) {
+                this.setState({tweets: tweets});
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
         
     },
     render: function() {

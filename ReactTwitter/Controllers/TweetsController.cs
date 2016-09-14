@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -14,7 +15,7 @@ namespace ReactTwitter.Controllers
         // GET: api/Tweets
         public IEnumerable<Tweet> GetTweets()
         {
-            return db.Tweets.ToList();
+            return db.Tweets.OrderByDescending(t => t.Date).ToList();
         }
 
         // GET: api/Tweets/5
