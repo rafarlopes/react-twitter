@@ -1,11 +1,18 @@
 ﻿var TwitterApp = React.createClass({
+    getInitialState: function() {
+        return { user: '' };
+    },
     handleUserLogin: function(user) {
-        console.log(user);
+        this.setState({user: user});
     },
     render: function() {
+        var componentToRender = this.state.user 
+            ? <TwitterHome/>
+            : <Login onLoginSubmit={this.handleUserLogin}/>;
+
         return (
-            <div> 
-                <Login  onLoginSubmit={this.handleUserLogin}/>
+            <div>
+                {componentToRender}
             </div>
         );
     }
@@ -36,6 +43,14 @@ var Login = React.createClass({
             </form>
         );
     }
+});
+
+var TwitterHome = React.createClass({
+   render: function() {
+       return (
+            <p>Tweets</p>
+        );
+   }
 });
 
 ReactDOM.render(
