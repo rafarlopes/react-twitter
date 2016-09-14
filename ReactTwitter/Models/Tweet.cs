@@ -19,6 +19,8 @@ namespace ReactTwitter.Models
         [Required]
         public DateTime Date { get; set; }
 
+        public long? ParentTweetId { get; set; }
+
         public virtual Tweet ParentTweet { get; set; }
 
         public virtual ICollection<Tweet> Replies { get; set; }

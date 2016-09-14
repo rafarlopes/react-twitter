@@ -72,7 +72,7 @@ var TwitterHome = React.createClass({
             user: this.state.user,
             date: new Date().toJSON(),
             message: message,
-            parentTweet: parentTweet
+            parentTweetId: parentTweet.id
         };
 
         $.ajax({
@@ -147,7 +147,7 @@ var TweetList = React.createClass({
 
 var Tweet = React.createClass({
     getInitialState: function () {
-        return { showReplyFormModal: false };
+        return { showReplyFormModal: false, showConversationModal: false };
     },
     handleReplyFormHideModal: function () {
         this.setState({ showReplyFormModal: false });
@@ -155,19 +155,27 @@ var Tweet = React.createClass({
     handleReplyFormShowModal: function (){
         this.setState({ showReplyFormModal: true });
     },
-    handleReply: function(e) {
-        e.preventDefault();
+    handleConversationHideModal: function () {
+        this.setState({ showConversationModal: false });
+    },
+    handleConversationShowModal: function (){
+        this.setState({ showConversationModal: true });
     },
     render: function() {
-        var modal = this.state.showReplyFormModal 
+        var replyModal = this.state.showReplyFormModal 
             ? <TweetReplyModal onHideModal={this.handleReplyFormHideModal} tweet={this.props.tweet} onTweetSubmit={this.props.onTweetSubmit}/>
+            : null;
+
+        var conversationModal = this.state.showConversationModal 
+            ? <TweetConversationModal onHideModal={this.handleConversationHideModal}/>
             : null;
 
         return (
             <div className="tweet">
-                <b>@{this.props.tweet.user}:</b> {this.props.tweet.message}
+                <label onClick={this.handleConversationShowModal}><b>@{this.props.tweet.user}:</b> {this.props.tweet.message}</label>
                 <button className="replyButton" onClick={this.handleReplyFormShowModal}>Reply</button>
-                {modal}
+                {replyModal}
+                {conversationModal}
             </div>
         );
     }
@@ -191,6 +199,15 @@ var TweetReplyModal = React.createClass({
 
         return (
             <Modal title="Tweet Reply" body={modalBody} onHideModal={this.props.onHideModal}/>
+        );
+    }
+});
+
+var TweetConversationModal = React.createClass({
+    render: function() {
+        var modalBody = <p>Sweet!</p>;
+        return (
+            <Modal title="Conversation" body={modalBody} onHideModal={this.props.onHideModal} />
         );
     }
 });

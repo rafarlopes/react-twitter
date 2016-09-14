@@ -10,9 +10,9 @@ namespace ReactTwitter.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Tweet>()
-                .HasMany(t => t.Replies)
-                .WithOptional(t => t.ParentTweet)
-                .Map(t => t.MapKey("ParentTweetId"));
+                .HasOptional(t => t.ParentTweet)
+                .WithMany(t => t.Replies)
+                .HasForeignKey(t => t.ParentTweetId);
         }
     }
 }
