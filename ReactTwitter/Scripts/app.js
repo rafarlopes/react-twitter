@@ -174,10 +174,6 @@ var Tweet = React.createClass({
 });
 
 var TweetReplyModal = React.createClass({
-    componentDidMount: function (){
-        $(ReactDOM.findDOMNode(this)).modal('show');
-        $(ReactDOM.findDOMNode(this)).on('hidden.bs.modal', this.props.onHideModal);
-    },
     getInitialState: function() {
         return { reply: '@' + this.props.tweet.user + ' ' };
     },
@@ -197,26 +193,39 @@ var TweetReplyModal = React.createClass({
         $(ReactDOM.findDOMNode(this)).modal('hide');
     },
     render: function() {
+        var modalBody = <form className="replyForm" onSubmit={this.handleSubmit}>
+                            <div className="modal-body">
+                                <p><b>@{this.props.tweet.user}: </b> {this.props.tweet.message}</p>
+                                <input type="text" value={this.state.reply} onChange={this.handleReplyChange} />
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                                <input type="submit" className="btn btn-primary" value="Reply"/>
+                            </div>
+                        </form>;
+        return (
+            <Modal title="Tweet Reply" body={modalBody} onHideModal={this.props.onHideModal}/>
+        );
+    }
+});
+
+var Modal = React.createClass({
+    componentDidMount: function (){
+        $(ReactDOM.findDOMNode(this)).modal('show');
+        $(ReactDOM.findDOMNode(this)).on('hidden.bs.modal', this.props.onHideModal);
+    },
+    render: function() {
         return (
             <div className="modal fade" tabIndex="-1" role="dialog">
-              <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 className="modal-title">Tweet Reply</h4>
-                  </div>
-                    <form className="replyForm" onSubmit={this.handleSubmit}>
-                      <div className="modal-body">
-                        <p><b>@{this.props.tweet.user}: </b> {this.props.tweet.message}</p>
-                            <input type="text" value={this.state.reply} onChange={this.handleReplyChange} />
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                        <input type="submit" className="btn btn-primary" value="Reply"/>
-                      </div>
-                  </form>
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 className="modal-title">{this.props.title}</h4>
+                        </div>
+                        {this.props.body}
+                    </div>
                 </div>
-              </div>
             </div>
         );
     }
