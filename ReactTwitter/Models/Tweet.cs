@@ -7,6 +7,11 @@ namespace ReactTwitter.Models
 {
     public class Tweet
     {
+        public Tweet()
+        {
+            Replies = new List<Tweet>();
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
@@ -18,8 +23,6 @@ namespace ReactTwitter.Models
 
         [Required]
         public DateTime Date { get; set; }
-
-        public virtual Tweet ReplyToTweet { get; set; }
 
         public virtual ICollection<Tweet> Replies { get; set; }
     }

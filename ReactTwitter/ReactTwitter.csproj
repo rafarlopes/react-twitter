@@ -109,13 +109,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TweetsController.cs" />
     <Compile Include="DAL\TwitterContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609140356211_CreatedTweetsTable.cs" />
-    <Compile Include="Migrations\201609140356211_CreatedTweetsTable.Designer.cs">
-      <DependentUpon>201609140356211_CreatedTweetsTable.cs</DependentUpon>
+    <Compile Include="Migrations\201609140426562_CreatedTweetsTable.cs" />
+    <Compile Include="Migrations\201609140426562_CreatedTweetsTable.Designer.cs">
+      <DependentUpon>201609140426562_CreatedTweetsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Tweet.cs" />
@@ -136,8 +137,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201609140356211_CreatedTweetsTable.resx">
-      <DependentUpon>201609140356211_CreatedTweetsTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609140426562_CreatedTweetsTable.resx">
+      <DependentUpon>201609140426562_CreatedTweetsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

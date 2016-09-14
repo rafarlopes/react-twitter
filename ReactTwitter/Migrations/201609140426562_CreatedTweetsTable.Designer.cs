@@ -13,7 +13,7 @@ namespace ReactTwitter.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201609140356211_CreatedTweetsTable"; }
+            get { return "201609140426562_CreatedTweetsTable"; }
         }
         
         string IMigrationMetadata.Source
