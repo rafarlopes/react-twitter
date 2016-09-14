@@ -103,7 +103,9 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Scripts\app.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -114,9 +116,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609140426562_CreatedTweetsTable.cs" />
-    <Compile Include="Migrations\201609140426562_CreatedTweetsTable.Designer.cs">
-      <DependentUpon>201609140426562_CreatedTweetsTable.cs</DependentUpon>
+    <Compile Include="Migrations\201609141417352_CreateTweetsTable.cs" />
+    <Compile Include="Migrations\201609141417352_CreateTweetsTable.Designer.cs">
+      <DependentUpon>201609141417352_CreateTweetsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Tweet.cs" />
@@ -137,8 +139,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201609140426562_CreatedTweetsTable.resx">
-      <DependentUpon>201609140426562_CreatedTweetsTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609141417352_CreateTweetsTable.resx">
+      <DependentUpon>201609141417352_CreateTweetsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

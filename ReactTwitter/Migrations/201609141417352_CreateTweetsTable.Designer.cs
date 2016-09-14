@@ -7,13 +7,13 @@ namespace ReactTwitter.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class CreatedTweetsTable : IMigrationMetadata
+    public sealed partial class CreateTweetsTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CreatedTweetsTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreateTweetsTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609140426562_CreatedTweetsTable"; }
+            get { return "201609141417352_CreateTweetsTable"; }
         }
         
         string IMigrationMetadata.Source
