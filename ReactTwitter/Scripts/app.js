@@ -72,7 +72,7 @@ var TwitterHome = React.createClass({
             user: this.state.user,
             date: new Date().toJSON(),
             message: message,
-            parentTweetId: parentTweet.id
+            parentTweetId: parentTweet ? parentTweet.id : null
         };
 
         $.ajax({
@@ -131,23 +131,39 @@ var TweetForm = React.createClass({
 
 var TweetList = React.createClass({
     render: function() {
-        var props = this.props;
-        var tweetNodes = props.tweets.map(function(tweet) {
-            return (
-              <Tweet tweet={tweet} onTweetSubmit={props.onTweetSubmit}/>
-            );
-        });
+        var tweetListCompoment = this;
         return (
             <div className="tweetList">
-                {tweetNodes}
+                {
+                    this.props.tweets.map(function(tweet) {
+                        return (
+                            <div key={tweet.id}>
+                                <TweetConversation tweet={tweet}>
+                                    <Tweet tweet={tweet} onTweetSubmit={tweetListCompoment.props.onTweetSubmit} />
+                                </TweetConversation>
+                                <ReplyButton tweet={tweet} onTweetSubmit={tweetListCompoment.props.onTweetSubmit}/>
+                            </div>
+                        );
+                    })
+                }
             </div>
         );
     }
 });
 
 var Tweet = React.createClass({
+    render: function() {
+        return (
+            <div className="tweet" onClick={this.props.onClick}>
+                <b>@{this.props.tweet.user}:</b> {this.props.tweet.message}
+            </div>
+        );
+    }
+});
+
+var ReplyButton = React.createClass({
     getInitialState: function () {
-        return { showReplyFormModal: false, showConversationModal: false };
+        return { showReplyFormModal: false };
     },
     handleReplyFormHideModal: function () {
         this.setState({ showReplyFormModal: false });
@@ -155,27 +171,15 @@ var Tweet = React.createClass({
     handleReplyFormShowModal: function (){
         this.setState({ showReplyFormModal: true });
     },
-    handleConversationHideModal: function () {
-        this.setState({ showConversationModal: false });
-    },
-    handleConversationShowModal: function (){
-        this.setState({ showConversationModal: true });
-    },
     render: function() {
         var replyModal = this.state.showReplyFormModal 
             ? <TweetReplyModal onHideModal={this.handleReplyFormHideModal} tweet={this.props.tweet} onTweetSubmit={this.props.onTweetSubmit}/>
             : null;
 
-        var conversationModal = this.state.showConversationModal 
-            ? <TweetConversationModal onHideModal={this.handleConversationHideModal}/>
-            : null;
-
         return (
-            <div className="tweet">
-                <label onClick={this.handleConversationShowModal}><b>@{this.props.tweet.user}:</b> {this.props.tweet.message}</label>
+            <div>
                 <button className="replyButton" onClick={this.handleReplyFormShowModal}>Reply</button>
                 {replyModal}
-                {conversationModal}
             </div>
         );
     }
@@ -203,11 +207,49 @@ var TweetReplyModal = React.createClass({
     }
 });
 
+var TweetConversation = React.createClass({
+    getInitialState: function () {
+        return { showConversationModal: false };
+    },
+    handleConversationHideModal: function () {
+        this.setState({ showConversationModal: false });
+    },
+    handleConversationShowModal: function (){
+        this.setState({ showConversationModal: true });
+    },
+    render: function() {
+        var conversationModal = this.state.showConversationModal 
+            ? <TweetConversationModal onHideModal={this.handleConversationHideModal} tweet={this.props.tweet}/>
+            : null;
+
+        return (
+            <div onClick={this.handleConversationShowModal}>
+                { this.props.children }
+                { conversationModal }
+            </div>
+        );
+    }
+});
+
 var TweetConversationModal = React.createClass({
     render: function() {
-        var modalBody = <p>Sweet!</p>;
+        var modalBody = <ConversationList tweets={this.props.tweet.replies}/>;
         return (
             <Modal title="Conversation" body={modalBody} onHideModal={this.props.onHideModal} />
+        );
+    }
+});
+
+var ConversationList = React.createClass({
+    render: function() {
+        return (
+            <div>
+            {
+                this.props.tweets.map(function(tweet) {
+                    return <Tweet key={tweet.id} tweet={tweet} />;
+                })
+            }
+            </div>
         );
     }
 });
