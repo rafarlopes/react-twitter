@@ -82,9 +82,8 @@ var TwitterHome = React.createClass({
             dataType: 'json',
             type: 'POST',
             data: tweet,
-            success: function(data) {
-                tweets.unshift(data);
-                this.setState({ tweets: tweets, user: this.state.user });
+            success: function() {
+                this.loadTweetsFromServer();
             }.bind(this),
             error: function(xhr, status, err) {
                 this.setState({tweets: tweets});
@@ -106,7 +105,8 @@ var TwitterHome = React.createClass({
 
 var TweetForm = React.createClass({
     getInitialState: function() {
-        return { tweet: this.props.tweet };
+        var initialValue = this.props.tweet ? this.props.tweet : "";
+        return { tweet: initialValue };
     },
     handleTweetChange: function(e) {
         this.setState({tweet: e.target.value});
