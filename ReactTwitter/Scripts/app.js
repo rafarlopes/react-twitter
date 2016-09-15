@@ -242,7 +242,7 @@ var TweetConversation = React.createClass({
 
 var TweetConversationModal = React.createClass({
     render: function() {
-        var modalBody = <ConversationList tweets={this.props.tweet.replies}/>;
+        var modalBody = <ConversationList tweet={this.props.tweet}/>;
         return (
             <Modal title="Conversation" body={modalBody} onHideModal={this.props.onHideModal} />
         );
@@ -251,13 +251,15 @@ var TweetConversationModal = React.createClass({
 
 var ConversationList = React.createClass({
     render: function() {
+        var replies = this.props.tweet.replies
+            ? this.props.tweet.replies.map(function(tweet) {
+                    return <Tweet key = { tweet.id } tweet = { tweet }/>;
+                }) 
+            : null;
         return (
             <div>
-            {
-                this.props.tweets.map(function(tweet) {
-                    return <Tweet key={tweet.id} tweet={tweet} />;
-                })
-            }
+                <Tweet key={this.props.tweet.id} tweet={this.props.tweet} />
+                {replies}
             </div>
         );
     }
