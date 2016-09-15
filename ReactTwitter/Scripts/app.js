@@ -11,7 +11,7 @@
             : <Login onLoginSubmit={this.handleUserLogin}/>;
 
         return (
-            <div>
+            <div className="row">
                 {componentToRender}
             </div>
         );
@@ -37,9 +37,11 @@ var Login = React.createClass({
     },
     render: function() {
         return (
-            <form className="loginForm" onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Your login" value={this.state.user} onChange={this.handleLoginChange} />
-                <input type="submit" value="Login" />
+            <form className="form-signin col-md-4 col-md-offset-4" onSubmit={this.handleSubmit}>
+                <h2 className="form-signin-heading">Please sign in</h2>
+                <label htmlFor="inputLogin" className="sr-only">Login</label>
+                <input name="inputLogin" className="form-control" type="text" placeholder="Your login" value={this.state.user} onChange={this.handleLoginChange} required />
+                <button type="submit" className = "btn btn-lg btn-primary btn-block" > Sign in </button>
             </form>
         );
     }
@@ -93,9 +95,9 @@ var TwitterHome = React.createClass({
     },
     render: function() {
         return (
-            <div>
+            <div className="col-md-12">
                 <TweetForm onTweetSubmit={this.handleTweetSubmit}/>
-                <p>Tweets</p>
+                <h3>Tweets</h3>
                 <TweetList tweets={this.state.tweets} onTweetSubmit={this.handleTweetSubmit}/>
             </div>
         );
@@ -121,9 +123,14 @@ var TweetForm = React.createClass({
     },
     render: function() {
         return (
-            <form className="tweetForm" onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="What's happening?" value={this.state.tweet} onChange={this.handleTweetChange} />
-                <input type="submit" value="Tweet!" />
+            <form onSubmit={this.handleSubmit}>
+                <div className="input-group">
+                    <label htmlFor="tweet" className="sr-only">Tweet</label>
+                    <input className="form-control" name="tweet" type="text" placeholder="What's happening?" value={this.state.tweet} onChange={this.handleTweetChange} required maxLength="140"/>
+                    <span className="input-group-btn">
+                        <button className="btn btn-primary" type="submit">Tweet!</button>
+                    </span>
+                </div>
             </form>
         );
     }
@@ -137,7 +144,7 @@ var TweetList = React.createClass({
                 {
                     this.props.tweets.map(function(tweet) {
                         return (
-                            <div key={tweet.id}>
+                            <div key={tweet.id} className="thumbnail">
                                 <TweetConversation tweet={tweet}>
                                     <Tweet tweet={tweet} onTweetSubmit={tweetListCompoment.props.onTweetSubmit} />
                                 </TweetConversation>
@@ -154,8 +161,9 @@ var TweetList = React.createClass({
 var Tweet = React.createClass({
     render: function() {
         return (
-            <div className="tweet" onClick={this.props.onClick}>
-                <b>@{this.props.tweet.user}:</b> {this.props.tweet.message}
+            <div className="caption" onClick={this.props.onClick}>
+                <h4>@{this.props.tweet.user}</h4> 
+                <p>{this.props.tweet.message}</p>
             </div>
         );
     }
@@ -178,7 +186,7 @@ var ReplyButton = React.createClass({
 
         return (
             <div>
-                <button className="replyButton" onClick={this.handleReplyFormShowModal}>Reply</button>
+                <button className="btn btn-primary btn-block" onClick={this.handleReplyFormShowModal}>Reply</button>
                 {replyModal}
             </div>
         );
@@ -197,7 +205,8 @@ var TweetReplyModal = React.createClass({
     },
     render: function() {
         var modalBody = <div>
-                            <p><b>@{this.props.tweet.user}: </b> {this.props.tweet.message}</p>
+                            <label>@{this.props.tweet.user}: </label>
+                            <p>{this.props.tweet.message}</p>
                             <TweetForm onTweetSubmit={this.handleSubmit} tweet={this.state.reply} parentTweet={this.props.tweet}/>
                         </div>;
 
