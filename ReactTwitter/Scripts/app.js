@@ -146,7 +146,7 @@ var TweetList = React.createClass({
                         return (
                             <div key={tweet.id} className="thumbnail">
                                 <TweetConversation tweet={tweet}>
-                                    <Tweet tweet={tweet} onTweetSubmit={tweetListCompoment.props.onTweetSubmit} />
+                                    <Tweet tweet={tweet} />
                                 </TweetConversation>
                                 <ReplyButton tweet={tweet} onTweetSubmit={tweetListCompoment.props.onTweetSubmit}/>
                             </div>
@@ -161,7 +161,7 @@ var TweetList = React.createClass({
 var Tweet = React.createClass({
     render: function() {
         return (
-            <div className="caption" onClick={this.props.onClick}>
+            <div className="caption">
                 <h4>@{this.props.tweet.user}</h4> 
                 <p>{this.props.tweet.message}</p>
             </div>
@@ -205,8 +205,7 @@ var TweetReplyModal = React.createClass({
     },
     render: function() {
         var modalBody = <div>
-                            <label>@{this.props.tweet.user}: </label>
-                            <p>{this.props.tweet.message}</p>
+                            <Tweet tweet={this.props.tweet} />
                             <TweetForm onTweetSubmit={this.handleSubmit} tweet={this.state.reply} parentTweet={this.props.tweet}/>
                         </div>;
 
